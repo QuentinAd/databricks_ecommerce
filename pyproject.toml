@@ -11,6 +11,11 @@ dev = [
     "databricks-connect>=15.4,<15.5",
 ]
 
+pyspark = [
+    "pytest",
+    "pyspark==3.5.6"
+]
+
 [tool.pytest.ini_options]
 pythonpath = "src"
 testpaths = [
