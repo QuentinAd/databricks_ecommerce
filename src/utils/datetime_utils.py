@@ -19,8 +19,9 @@ def timestamp_to_date_col(
     Returns:
         DataFrame: A new DataFrame with the additional date column.
     """
-    # Extract the date part of the timestamp
-    return df.withColumn(output_col, F.date_format(F.col(timestamp_col), 'yyyy-MM-dd'))
+    # Extract the date part of the timestamp as a true DateType column
+    # Use to_date on the timestamp column to avoid returning a string
+    return df.withColumn(output_col, F.to_date(F.col(timestamp_col)))
 
 
 def timestamp_to_time_col(
