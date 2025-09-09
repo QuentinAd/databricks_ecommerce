@@ -7,11 +7,8 @@ dependencies = []
 
 [project.optional-dependencies]
 dbc = [
-    "pytest==8.4.2",
     "databricks-dlt==0.3.0",
     "databricks-connect>=15.4,<15.5",
-    "ruff>=0.12.12",
-    "pre-commit>=4.3.0",
 ]
 
 dev = [
@@ -19,6 +16,7 @@ dev = [
     "pyspark==3.5.6",
     "ruff>=0.12.12",
     "pre-commit>=4.3.0",
+    "pytest-cov>=7.0.0",
 ]
 
 [tool.pytest.ini_options]
