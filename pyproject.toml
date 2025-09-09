@@ -25,6 +25,15 @@ testpaths = [
     "tests",
 ]
 
+[tool.coverage.run]
+source = ["src"]
+omit = ["src/ecommerce/*"]
+
+[tool.coverage.report]
+omit = ["src/ecommerce/*"]
+show_missing = true
+skip_empty = true
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
