@@ -1,4 +1,3 @@
-
 spark.sql("""
     CREATE EXTERNAL LOCATION IF NOT EXISTS dea_course_ext_dl_gizmobox
     URL 's3://databricks-dea-demo/gizmobox/'
@@ -18,20 +17,26 @@ USE CATALOG gizmobox;
 
 spark.sql("""
 CREATE SCHEMA IF NOT EXISTS landing
-     MANAGED LOCATION 's3://databricks-dea-demo/gizmobox/landing'; 
+     MANAGED LOCATION 's3://databricks-dea-demo/gizmobox/landing';
+""")
+
+spark.sql("""
 CREATE SCHEMA IF NOT EXISTS bronze
      MANAGED LOCATION 's3://databricks-dea-demo/gizmobox/bronze';
+""")
+
+spark.sql("""
 CREATE SCHEMA IF NOT EXISTS silver
      MANAGED LOCATION 's3://databricks-dea-demo/gizmobox/silver';
+""")
+
+spark.sql("""
 CREATE SCHEMA IF NOT EXISTS gold
      MANAGED LOCATION 's3://databricks-dea-demo/gizmobox/gold';
 """)
 
 
 spark.sql("""
-USE CATALOG gizmobox;
-USE SCHEMA landing;
-
-CREATE EXTERNAL VOLUME IF NOT EXISTS operational_data
+CREATE EXTERNAL VOLUME IF NOT EXISTS gizmobox.landing.operational_data
     LOCATION 's3://databricks-dea-demo/gizmobox/landing/operational_data';
 """)

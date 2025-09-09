@@ -48,6 +48,18 @@ extend-exclude = [
     "build",
     "dist",
 ]
+builtins = [
+  "dbutils",
+  "spark",
+  "sc",
+  "sqlContext",
+  "sql",
+  "table",
+  "udf",
+  "getArgument",
+  "display",
+  "displayHTML",
+]
 
 [tool.ruff.format]
 quote-style = "single"
