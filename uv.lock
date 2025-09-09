@@ -134,14 +134,14 @@ version = "0.0.1"
 source = { editable = "." }
 
 [package.optional-dependencies]
-dev = [
+dbc = [
     { name = "databricks-connect" },
     { name = "databricks-dlt" },
     { name = "pre-commit" },
     { name = "pytest" },
     { name = "ruff" },
 ]
-pyspark = [
+dev = [
     { name = "pre-commit" },
     { name = "pyspark" },
     { name = "pytest" },
@@ -150,17 +150,17 @@ pyspark = [
 
 [package.metadata]
 requires-dist = [
-    { name = "databricks-connect", marker = "extra == 'dev'", specifier = ">=15.4,<15.5" },
-    { name = "databricks-dlt", marker = "extra == 'dev'", specifier = "==0.3.0" },
+    { name = "databricks-connect", marker = "extra == 'dbc'", specifier = ">=15.4,<15.5" },
+    { name = "databricks-dlt", marker = "extra == 'dbc'", specifier = "==0.3.0" },
+    { name = "pre-commit", marker = "extra == 'dbc'", specifier = ">=4.3.0" },
     { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=4.3.0" },
-    { name = "pre-commit", marker = "extra == 'pyspark'", specifier = ">=4.3.0" },
-    { name = "pyspark", marker = "extra == 'pyspark'", specifier = "==3.5.6" },
+    { name = "pyspark", marker = "extra == 'dev'", specifier = "==3.5.6" },
+    { name = "pytest", marker = "extra == 'dbc'", specifier = "==8.4.2" },
     { name = "pytest", marker = "extra == 'dev'", specifier = "==8.4.2" },
-    { name = "pytest", marker = "extra == 'pyspark'", specifier = "==8.4.2" },
+    { name = "ruff", marker = "extra == 'dbc'", specifier = ">=0.12.12" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.12.12" },
-    { name = "ruff", marker = "extra == 'pyspark'", specifier = ">=0.12.12" },
 ]
-provides-extras = ["dev", "pyspark"]
+provides-extras = ["dbc", "dev"]
 
 [[package]]
 name = "databricks-sdk"

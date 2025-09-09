@@ -6,7 +6,7 @@ requires-python = ">= 3.11"
 dependencies = []
 
 [project.optional-dependencies]
-dev = [
+dbc = [
     "pytest==8.4.2",
     "databricks-dlt==0.3.0",
     "databricks-connect>=15.4,<15.5",
@@ -14,7 +14,7 @@ dev = [
     "pre-commit>=4.3.0",
 ]
 
-pyspark = [
+dev = [
     "pytest==8.4.2",
     "pyspark==3.5.6",
     "ruff>=0.12.12",
