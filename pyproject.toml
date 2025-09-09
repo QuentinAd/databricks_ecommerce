@@ -79,6 +79,7 @@ select = [
 ignore = [
     "ANN101", # missing type annotation for self
     "ANN102", # missing type annotation for cls
+    "N812", # allows naming imports with upper case such as "F"
 ]
 
 [tool.ruff.lint.isort]
