@@ -1,8 +1,19 @@
+# databricks local env
 .databricks/
+
+# python local
 build/
 dist/
 __pycache__/
 *.egg-info
+
+# local env
 .venv/
+
+# local draft code
 scratch/**
 !scratch/README.md
+
+# unit tests
+htmlcov
+.coverage
