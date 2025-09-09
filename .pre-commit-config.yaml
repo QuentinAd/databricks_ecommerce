@@ -1,0 +1,24 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Pin to a specific released tag of ruff.
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args:
+          - --fix
+          - --exit-non-zero-on-fix
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: detect-private-key
+
+ci:
+  autofix_prs: true
+  autofix_commit_msg: "chore(pre-commit): auto-fix from hooks"
+  skip: []

@@ -3,17 +3,22 @@ name = "databricks_ecommerce"
 version = "0.0.1"
 authors = [{ name = "qadam2602@gmail.com" }]
 requires-python = ">= 3.11"
+dependencies = []
 
 [project.optional-dependencies]
 dev = [
-    "pytest",
-    "databricks-dlt",
+    "pytest==8.4.2",
+    "databricks-dlt==0.3.0",
     "databricks-connect>=15.4,<15.5",
+    "ruff>=0.12.12",
+    "pre-commit>=4.3.0",
 ]
 
 pyspark = [
-    "pytest",
-    "pyspark==3.5.6"
+    "pytest==8.4.2",
+    "pyspark==3.5.6",
+    "ruff>=0.12.12",
+    "pre-commit>=4.3.0",
 ]
 
 [tool.pytest.ini_options]
@@ -32,3 +37,53 @@ packages = ["src/ecommerce"]
 
 [project.scripts]
 main = "ecommerce.main:main"
+
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+extend-exclude = [
+    ".venv",
+    "build",
+    "dist",
+]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
+[tool.ruff.lint]
+# A strict-ish, pragmatic rule set.
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort (imports)
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "A",   # flake8-builtins
+    "C4",  # flake8-comprehensions
+    "PT",  # flake8-pytest-style
+    "PL",  # pylint (subset)
+    "PIE", # flake8-pie
+    "PERF",# perflint
+    "RUF", # Ruff-specific rules
+    "ANN", # flake8-annotations (encourage type hints)
+    "ARG", # flake8-unused-arguments
+    "ISC", # flake8-implicit-str-concat
+    "COM", # flake8-commas
+]
+# Common pragmatic ignores (adjust as needed):
+ignore = [
+    "ANN101", # missing type annotation for self
+    "ANN102", # missing type annotation for cls
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["ecommerce"]
+force-sort-within-sections = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
