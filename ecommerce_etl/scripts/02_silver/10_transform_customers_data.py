@@ -1,16 +1,21 @@
+import sys
+
+# Set parameter values
+catalog = sys.argv[1]
+
 spark.sql("""
 CREATE OR REPLACE TEMPORARY VIEW v_customers_distinct
 AS
 SELECT
 DISTINCT *
-FROM gizmobox.bronze.v_customers
+FROM {catalog}.bronze.v_customers
 WHERE customer_id IS NOT NULL
 ORDER BY customer_id;
 """)
 
 
 spark.sql("""
-CREATE TABLE gizmobox.silver.customers
+CREATE OR REPLACE TABLE {catalog}.silver.customers
 AS
 WITH cte_customers_max_distinct (
   SELECT

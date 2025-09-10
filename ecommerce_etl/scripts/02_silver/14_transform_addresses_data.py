@@ -1,5 +1,10 @@
-spark.sql("""
-CREATE TABLE gizmobox.silver.addresses
+import sys
+
+# Set parameter values
+catalog = sys.argv[1]
+
+spark.sql(f"""
+CREATE TABLE {catalog}.silver.addresses
 AS
 SELECT *
 FROM (
@@ -10,7 +15,7 @@ FROM (
   city,
   state,
   postcode
-  FROM gizmobox.bronze.v_addresses
+  FROM {catalog}.bronze.v_addresses
 )
 PIVOT (MAX(address_line_1) AS address_line_1,
        MAX(city) AS city,

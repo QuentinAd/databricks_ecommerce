@@ -1,8 +1,13 @@
-spark.sql("""
-CREATE TABLE gizmobox.silver.memberships
+import sys
+
+# Set parameter values
+catalog = sys.argv[1]
+
+spark.sql(f"""
+CREATE TABLE {catalog}.silver.memberships
 AS
 SELECT
 regexp_extract(path, '.*/([0-9]+)\\.png$', 1) AS customer_id,
 content as membership_card
-FROM gizmobox.bronze.v_memberships;
+FROM {catalog}.bronze.v_memberships;
           """)

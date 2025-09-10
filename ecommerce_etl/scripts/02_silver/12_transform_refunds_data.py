@@ -8,7 +8,7 @@ from utils.datetime_utils import timestamp_to_date_col, timestamp_to_time_col
 catalog = sys.argv[1]
 
 # Read bronze refunds
-df = spark.table('gizmobox.bronze.refunds')
+df = spark.table(f'{catalog}.bronze.refunds')
 
 # Derive refund_date using shared datetime utility
 df = timestamp_to_date_col(df, 'refund_timestamp', 'refund_date')

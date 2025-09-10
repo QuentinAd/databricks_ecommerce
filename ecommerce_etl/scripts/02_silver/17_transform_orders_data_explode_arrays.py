@@ -1,4 +1,9 @@
-spark.sql("""
+import sys
+
+# Set parameter values
+catalog = sys.argv[1]
+
+spark.sql(f"""
 CREATE OR REPLACE TEMP VIEW tv_orders_exploded
 AS
 SELECT json_value.order_id,
@@ -8,11 +13,11 @@ SELECT json_value.order_id,
         json_value.transaction_timestamp,
         json_value.customer_id,
         explode(array_distinct(json_value.items)) AS item
-FROM gizmobox.silver.orders_json;
+FROM {catalog}.silver.orders_json;
 """)
 
-spark.sql("""
-CREATE TABLE IF NOT EXISTS gizmobox.silver.orders
+spark.sql(f"""
+CREATE TABLE IF NOT EXISTS {catalog}.silver.orders
 AS
 SELECT order_id,
        order_status,

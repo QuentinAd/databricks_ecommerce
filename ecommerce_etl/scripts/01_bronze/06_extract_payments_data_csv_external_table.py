@@ -1,8 +1,13 @@
-spark.sql("""DROP TABLE IF EXISTS gizmobox.bronze.payments;
+import sys
+
+# Set parameter values
+catalog = sys.argv[1]
+
+spark.sql(f"""DROP TABLE IF EXISTS {catalog}.bronze.payments;
 """)
 
 spark.sql("""
-CREATE TABLE IF NOT EXISTS gizmobox.bronze.payments
+CREATE TABLE IF NOT EXISTS {catalog}.bronze.payments
   (payment_id INTEGER,
   order_id INTEGER,
   payment_timestamp TIMESTAMP,

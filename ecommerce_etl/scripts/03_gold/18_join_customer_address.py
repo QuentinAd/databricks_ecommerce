@@ -1,5 +1,10 @@
-spark.sql("""
-CREATE TABLE IF NOT EXISTS gizmobox.gold.customer_address
+import sys
+
+# Set parameter values
+catalog = sys.argv[1]
+
+spark.sql(f"""
+CREATE TABLE IF NOT EXISTS {catalog}.gold.customer_address
 AS
 SELECT c.customer_id,
        c.customer_name,
@@ -15,7 +20,7 @@ SELECT c.customer_id,
        a.billing_city,
        a.billing_state,
        a.billing_postcode
-  FROM gizmobox.silver.customers c
-  INNER JOIN gizmobox.silver.addresses a
+  FROM {catalog}.silver.customers c
+  INNER JOIN {catalog}.silver.addresses a
           ON c.customer_id = a.customer_id;
 """)

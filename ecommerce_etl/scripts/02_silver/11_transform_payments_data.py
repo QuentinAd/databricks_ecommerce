@@ -1,5 +1,10 @@
-spark.sql("""
-CREATE TABLE gizmobox.silver.payments
+import sys
+
+# Set parameter values
+catalog = sys.argv[1]
+
+spark.sql(f"""
+CREATE TABLE {catalog}.silver.payments
 AS
 SELECT payment_id,
        order_id,
@@ -12,5 +17,5 @@ SELECT payment_id,
          WHEN 4 THEN 'Failed'
        END AS payment_status,
        payment_method
-  FROM gizmobox.bronze.payments;
+  FROM {catalog}.bronze.payments;
   """)

@@ -1,14 +1,19 @@
-spark.sql("""
+import sys
+
+# Set parameter values
+catalog = sys.argv[1]
+
+spark.sql(f"""
 CREATE OR REPLACE TEMPORARY VIEW tv_orders_fixed AS
 SELECT value,
        regexp_replace(value,
           '"order_date": (\\d{4}-\\d{2}-\\d{2})',
           '"order_date": "\\$1"') AS fixed_value
-  FROM gizmobox.bronze.v_orders;
+  FROM {catalog}.bronze.v_orders;
 """)
 
-spark.sql("""
-CREATE TABLE IF NOT EXISTS gizmobox.silver.orders_json
+spark.sql(f"""
+CREATE TABLE IF NOT EXISTS {catalog}.silver.orders_json
 AS
 SELECT from_json(fixed_value,
           'STRUCT<customer_id: BIGINT,

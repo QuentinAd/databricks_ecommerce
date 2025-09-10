@@ -4,9 +4,21 @@ bundle:
   name: databricks_ecommerce
   uuid: 0470c658-441b-46a6-82da-1dde0f7ca7e1
 
+artifacts:
+  default:
+    type: whl
+    build: uv build --wheel
+    path: .
+
 include:
   - resources/*.yml
   - resources/*/*.yml
+
+variables:
+  catalog:
+    default: "ecommerce_dev"
+  dev_flag:
+    default: true
 
 targets:
   dev:
@@ -19,12 +31,36 @@ targets:
     workspace:
       host: https://dbc-19e65eed-b05e.cloud.databricks.com
 
+  test:
+    mode: production
+    workspace:
+      host: https://dbc-19e65eed-b05e.cloud.databricks.com
+      # We explicitly deploy to /Workspace/Users/flasks_brewpub5n@icloud.com to make sure we only have a single copy.
+      root_path: /Workspace/Users/flasks_brewpub5n@icloud.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog:
+        default: "ecommerce_test"
+      dev_flag:
+        default: false
+    presets:
+      name_prefix: '[testing] '
+    permissions:
+      - user_name: flasks_brewpub5n@icloud.com
+        level: CAN_MANAGE
+
   prod:
     mode: production
     workspace:
       host: https://dbc-19e65eed-b05e.cloud.databricks.com
       # We explicitly deploy to /Workspace/Users/flasks_brewpub5n@icloud.com to make sure we only have a single copy.
-      root_path: /Workspace/Shared/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Workspace/Users/flasks_brewpub5n@icloud.com/.bundle/${bundle.name}/${bundle.target}
+    variables:
+      catalog:
+        default: "ecommerce_prod"
+      dev_flag:
+        default: false
+    presets:
+      name_prefix: '[prod] '
     permissions:
       - user_name: flasks_brewpub5n@icloud.com
         level: CAN_MANAGE
