@@ -137,5 +137,5 @@ resources:
         - environment_key: ecommerce_etl_wheel
           spec:
             dependencies:
-              - ../../artifacts/.internal/databricks_ecommerce-0.0.1-py3-none-any.whl
+              - ${workspace.artifact_path}/.internal/databricks_ecommerce-0.0.1-py3-none-any.whl
       performance_target: STANDARD
