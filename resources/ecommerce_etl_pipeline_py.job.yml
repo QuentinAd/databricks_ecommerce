@@ -1,0 +1,141 @@
+resources:
+  jobs:
+    ecommerce_etl_pipeline_py:
+      name: ecommerce_etl_pipeline_py
+      tasks:
+        - task_key: 01_setup_proj_env
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/00_init/01_setup_proj_env.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: ecommerce_etl_wheel
+        - task_key: 02_extract_customers_data_json
+          depends_on:
+            - task_key: 01_setup_proj_env
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/01_bronze/02_extract_customers_data_json.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 03_extract_orders_data_complex_json
+          depends_on:
+            - task_key: 01_setup_proj_env
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/01_bronze/03_extract_orders_data_complex_json.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 04_extract_memberships_data_image
+          depends_on:
+            - task_key: 01_setup_proj_env
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/01_bronze/04_extract_memberships_data_image.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 05_extract_addresses_data_csv_read_files
+          depends_on:
+            - task_key: 01_setup_proj_env
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/01_bronze/05_extract_addresses_data_csv_read_files.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 06_extract_payments_data_csv_external_table
+          depends_on:
+            - task_key: 01_setup_proj_env
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/01_bronze/06_extract_payments_data_csv_external_table.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 07_extract_refunds_data_jdbc
+          depends_on:
+            - task_key: 01_setup_proj_env
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/01_bronze/07_extract_refunds_data_jdbc.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 10_transform_customers_data
+          depends_on:
+            - task_key: 02_extract_customers_data_json
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/02_silver/10_transform_customers_data.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 11_transform_payments_data
+          depends_on:
+            - task_key: 06_extract_payments_data_csv_external_table
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/02_silver/11_transform_payments_data.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 12_transform_refunds_data
+          depends_on:
+            - task_key: 07_extract_refunds_data_jdbc
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/02_silver/12_transform_refunds_data.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 13_transform_memberships_data
+          depends_on:
+            - task_key: 04_extract_memberships_data_image
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/02_silver/13_transform_memberships_data.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 14_transform_addresses_data
+          depends_on:
+            - task_key: 05_extract_addresses_data_csv_read_files
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/02_silver/14_transform_addresses_data.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 16_transform_orders_data_string_to_json
+          depends_on:
+            - task_key: 03_extract_orders_data_complex_json
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/02_silver/16_transform_orders_data_string_to_json.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 17_transform_orders_data_explode_arrays
+          depends_on:
+            - task_key: 16_transform_orders_data_string_to_json
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/02_silver/17_transform_orders_data_explode_arrays.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 18_join_customer_address
+          depends_on:
+            - task_key: 10_transform_customers_data
+            - task_key: 14_transform_addresses_data
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/03_gold/18_join_customer_address.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+        - task_key: 19_monthly_order_summary
+          depends_on:
+            - task_key: 17_transform_orders_data_explode_arrays
+          spark_python_task:
+            python_file: ../ecommerce_etl/scripts/03_gold/19_monthly_order_summary.py
+            parameters:
+              - "${var.catalog}"
+          environment_key: Default
+      queue:
+        enabled: true
+      environments:
+        - environment_key: Default
+        - environment_key: ecommerce_etl_wheel
+          spec:
+            dependencies:
+              - ${workspace.artifact_path}/.internal/databricks_ecommerce-0.0.1-py3-none-any.whl
+      performance_target: STANDARD

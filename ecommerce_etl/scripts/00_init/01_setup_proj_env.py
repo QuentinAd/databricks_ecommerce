@@ -1,3 +1,8 @@
+import sys
+
+# Set parameter values
+catalog = sys.argv[1]
+
 spark.sql("""
     CREATE EXTERNAL LOCATION IF NOT EXISTS dea_course_ext_dl_gizmobox
     URL 's3://databricks-dea-demo/gizmobox/'
@@ -12,7 +17,7 @@ spark.sql("""
 """)
 
 spark.sql("""
-USE CATALOG gizmobox;
+USE CATALOG {catalog};
           """)
 
 spark.sql("""
@@ -37,6 +42,6 @@ CREATE SCHEMA IF NOT EXISTS gold
 
 
 spark.sql("""
-CREATE EXTERNAL VOLUME IF NOT EXISTS gizmobox.landing.operational_data
+CREATE EXTERNAL VOLUME IF NOT EXISTS {catalog}.landing.operational_data
     LOCATION 's3://databricks-dea-demo/gizmobox/landing/operational_data';
 """)

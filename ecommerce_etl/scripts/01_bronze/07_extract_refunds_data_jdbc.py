@@ -1,3 +1,8 @@
+import sys
+
+# Set parameter values
+catalog = sys.argv[1]
+
 password = dbutils.secrets.get(scope='dea_scope', key='pg_password')
 username = dbutils.secrets.get(scope='dea_scope', key='pg_user')
 
@@ -32,18 +37,18 @@ OPTIONS (database 'postgres');
 """)
 
 spark.sql("""
-CREATE OR REPLACE VIEW gizmobox.bronze.v_refunds
+CREATE OR REPLACE VIEW {catalog}.bronze.v_refunds
 AS
 SELECT * FROM rds_pg.public.refunds;
 """)
 
 spark.sql("""
-CREATE OR REPLACE TABLE gizmobox.bronze.refunds
+CREATE OR REPLACE TABLE {catalog}.bronze.refunds
 AS
 SELECT * FROM rds_pg.public.refunds;
 """)
 
 spark.sql("""
-INSERT OVERWRITE gizmobox.bronze.refunds
+INSERT OVERWRITE {catalog}.bronze.refunds
 SELECT * FROM rds_pg.public.refunds;
 """)

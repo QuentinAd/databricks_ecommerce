@@ -1,5 +1,10 @@
+import sys
+
+# Set parameter values
+catalog = sys.argv[1]
+
 spark.sql("""
-CREATE OR REPLACE VIEW gizmobox.bronze.v_customers
+CREATE OR REPLACE VIEW {catalog}.bronze.v_customers
 AS
 SELECT *,
        _metadata.file_path AS file_path
