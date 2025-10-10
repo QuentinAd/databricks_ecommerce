@@ -37,19 +37,15 @@ jobs:
           restore-keys: |
             uv-${{ runner.os }}-
 
-      - name: Configure Databricks
-        run: |
-          # write out the profile (here called "TEST")
-          cat <<EOF > ~/.databrickscfg
-          [TEST]
-          host = ${{ vars.DATABRICKS_HOST_TESTING_URL }}
-          EOF
-
       - name: Deploy to TEST
+        env:
+          DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST_TESTING_URL }}
+          DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_SP_CLIENT_ID_TEST }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_SP_CLIENT_SECRET_TEST }}
+          DATABRICKS_AUTH_TYPE: oauth-m2m
         run: |
-          databricks bundle deploy \
-            --target test \
-            --profile TEST
+          databricks auth describe
+          databricks bundle deploy --target test
 
   cd-deploy-prod:
     name: Deploy to PROD
@@ -83,16 +79,12 @@ jobs:
           restore-keys: |
             uv-${{ runner.os }}-
 
-      - name: Configure Databricks
-        run: |
-          # write out the profile (here called "PROD")
-          cat <<EOF > ~/.databrickscfg
-          [PROD]
-          host = ${{ vars.DATABRICKS_HOST_PROD_URL }}
-          EOF
-
       - name: Deploy to PROD
+        env:
+          DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST_PROD_URL }}
+          DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_SP_CLIENT_ID_PROD }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_SP_CLIENT_SECRET_PROD }}
+          DATABRICKS_AUTH_TYPE: oauth-m2m
         run: |
-          databricks bundle deploy \
-            --target prod \
-            --profile PROD
+          databricks auth describe
+          databricks bundle deploy --target test
