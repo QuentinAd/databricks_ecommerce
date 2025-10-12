@@ -89,4 +89,4 @@ jobs:
           DATABRICKS_AUTH_TYPE: oauth-m2m
         run: |
           databricks auth describe
-          databricks bundle deploy --target test
+          databricks bundle deploy --target prod
