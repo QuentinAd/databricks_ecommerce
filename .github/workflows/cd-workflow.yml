@@ -41,6 +41,7 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST_TESTING_URL }}
           DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_SP_CLIENT_ID_TEST }}
+          BUNDLE_VAR_sp_app_id: ${{ vars.DATABRICKS_SP_CLIENT_ID_TEST }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_SP_CLIENT_SECRET_TEST }}
           DATABRICKS_AUTH_TYPE: oauth-m2m
         run: |
@@ -83,6 +84,7 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST_PROD_URL }}
           DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_SP_CLIENT_ID_PROD }}
+          BUNDLE_VAR_sp_app_id: ${{ vars.DATABRICKS_SP_CLIENT_ID_PROD }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_SP_CLIENT_SECRET_PROD }}
           DATABRICKS_AUTH_TYPE: oauth-m2m
         run: |
